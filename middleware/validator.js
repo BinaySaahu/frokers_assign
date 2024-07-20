@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const HttpError = require("./../models/httpError");
 module.exports = async (req, res, next) => {
   if (req.method === "OPTIONS") {
     return next();
@@ -8,8 +7,7 @@ module.exports = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     if (!token) {
-      const error = new HttpError("Token not found!", 401);
-      return next(error);
+      return res.status(401).json({message:"Token not found!"});
     }
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN);
     res.locals.userData = {
@@ -19,8 +17,7 @@ module.exports = async (req, res, next) => {
     
     next();
   } catch (err) {
-    const error = new HttpError("Verification failed!", 403);
     console.log(err);
-    return next(error);
+    return res.status(403).json({message:"Verification failed!"});
   }
 };

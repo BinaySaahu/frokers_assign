@@ -1,7 +1,4 @@
 const User = require("../models/user");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const gravatar = require("gravatar");
 
 const userDataController = async (req, res) => {
   const { email } = res.locals.userData;

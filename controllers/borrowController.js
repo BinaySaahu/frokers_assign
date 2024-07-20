@@ -9,15 +9,14 @@ const borrowController = async (req, res) => {
       if (user) {
         const purchase_power = user.Purchase_power;
         if (purchase_power >= loan_amount) {
-          const interest_amt = loan_amount * 0.08 * tenure;
-          const total_payable_amt = interest_amt + loan_amount;
+          const interest_amt = loan_amount * 0.08 * tenure; // calculating the total interest payable in whatever tenure provided by user 
+          const total_payable_amt = interest_amt + loan_amount; //amount payable after the tenure
           const monthly_repayment_amt = total_payable_amt / (12 * tenure);
           const updated_purchase_power = purchase_power + loan_amount;
           const updated_user = await user.updateOne(
             { _id: user._id },
             { $set: { Purchase_power: updated_purchase_power } }
           );
-          console.log(updated_user);
           return res
             .status(200)
             .json({
